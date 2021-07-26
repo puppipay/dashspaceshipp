@@ -1,0 +1,386 @@
+<ion-header>
+  <ion-toolbar >
+   <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+
+    <ion-title>
+      Wallet setting
+    </ion-title>
+
+   <ion-buttons slot="secondary">
+     <ion-button  [disabled]="useraccount.termsagreed == 'no'" [disabled]="!loggedinuser"  (click)="gotokyc()">
+                KYC
+            </ion-button>
+     <ion-button  [disabled]="!loggedinuser"  (click)="getaccount()">
+                Refresh
+            </ion-button>
+
+
+            <ion-button  [disabled]="loggedinuser && loggedinuser.uid != ''" (click)="gotologin()">
+                Login
+            </ion-button>
+     </ion-buttons>
+
+
+  </ion-toolbar>
+</ion-header>
+
+
+
+<ion-content>
+
+<ion-card  class="datainput">
+<ion-card-header>
+<ion-card-title>
+Wallet
+</ion-card-title>
+<ion-card-subtitle>
+
+ <ion-badge margin>1</ion-badge>
+ <ion-button size="small" [disabled]="useraccount.termsagreed == 'no'" [disabled]="loggedinuser.uid == ''"   [disabled]="!enableoverwrite " color="primary" (click)="createwif()"> Create WIF (private-key) </ion-button>
+ <ion-button size="small" color="primary" (click)="createhelp()"> Help </ion-button>
+</ion-card-subtitle>
+</ion-card-header>
+<ion-item>
+<ion-label position="stacked"> Enter wallet WIF (Optional)</ion-label>
+<ion-textarea *ngIf="!hidden" rows="2" class="ion-text-wrap" placeholder="Dash WIF" [(ngModel)]="walletwif" > </ion-textarea>
+<ion-textarea readonly *ngIf="hidden" rows="2" class="ion-text-wrap" placeholder="Dash WIF" [(ngModel)]="hiddenwif" > </ion-textarea>
+
+<p>
+Save the wallet WIF for future use safely. 
+</p>           
+</ion-item>
+<ion-item>
+ <ion-badge slot="start">2</ion-badge>
+ <ion-button [disabled]="useraccount.wifupdate != 'allowed'"  [disabled]="loggedinuser.uid == ''"  [disabled]="!enableoverwrite"   size="small" color="primary" (click)="freeze()"> Register WIF </ion-button>
+
+<ion-button  [disabled]="loggedinuser.uid == ''"    [disabled]="useraccount.wifupdate != 'locked'"  size="small"  color="primary" (click)="localsave()"> Local save </ion-button>
+
+</ion-item>
+<ion-item  >
+ <ion-badge slot="start">3</ion-badge>
+    <ion-label class="ion-text-wrap" > <h4> 
+  By clicking “Accept”, 
+
+  </h4>
+    <p> 
+I agree to terms and conditions in the <a routerLink="/termspage"> link. </a>
+
+    </p>
+    </ion-label>
+
+
+    <ion-label slot="end" >
+ <ion-button   [disabled]="loggedinuser.uid == '' " size="small" color="primary" (click)="accept()"> Accept </ion-button>
+    </ion-label>
+  </ion-item>
+
+
+</ion-card>
+<ion-card>
+<ion-card-header>
+<ion-card-subtitle>
+ Wallet WIF Tools 
+</ion-card-subtitle>
+</ion-card-header>
+<ion-item>
+ <ion-button   *ngIf="!hidden" size="small" color="primary" (click)="hide()"> Hide </ion-button>
+ <ion-button   *ngIf="hidden" size="small" color="primary" (click)="show()"> Show </ion-button>
+ <ion-button   size="small" color="primary" (click)="copywif()"> Copy </ion-button>
+ <ion-button   size="small" color="primary" (click)="pastewif()"> Paste </ion-button>
+ <ion-button   size="small" color="primary" (click)="clearwif()"> Clear </ion-button>
+ <ion-button   [disabled]="loggedinuser.uid == ''"  size="small" color="primary" (click)="selfemail()"> Email </ion-button>
+</ion-item>
+
+
+ <ion-item >
+    <ion-icon name="wifi" slot="start"></ion-icon>
+    <ion-label class="ion-text-wrap"> <h4> Wallet Address  </h4> 
+         <p> {{walletaddress}} </p>
+    </ion-label>
+    <ion-label slot="end" >
+ <ion-button   [disabled]="loggedinuser.uid == ''"  size="small" color="primary" (click)="getwalletbalance()"> Balance </ion-button>
+    </ion-label>
+  </ion-item>
+
+ <ion-item >
+    <ion-icon name="wifi" slot="start"></ion-icon>
+    <ion-label class="ion-text-wrap"> <h4> Registered Address  </h4>
+         <p *ngIf="network=='testnet'"> {{useraccount.testaddress}} </p>
+         <p *ngIf="network=='livenet'"> {{useraccount.liveaddress}} </p>
+    </ion-label>
+    <ion-label slot="end" >
+    </ion-label>
+  </ion-item>
+
+
+
+  <ion-item>
+   <ion-icon name="warning" slot="start"></ion-icon>
+    <ion-label class="ion-text-wrap">
+    <h2>Wallet Overwrite </h2>
+    <p> Caution!  Wallet will be overwritten </p>
+    </ion-label>
+    <ion-label slot="end" >
+ <ion-button [disabled]="useraccount.liveaddress == ''"   [disabled]="useraccount.wifupdate != 'allowed'" [disabled]="loggedinuser.uid == ''"  [disabled]="!enableoverwrite"   size="small"  color="primary" (click)="freeze()"> WIF overwrite </ion-button>
+    </ion-label>
+
+  </ion-item>
+
+ <ion-item >
+    <ion-icon name="wine" slot="start"></ion-icon>
+     <ion-label class="ion-text-wrap">
+      <ion-text color="primary">
+        <h3> Balance </h3>
+      </ion-text>
+      <ion-text color="secondary">
+      <p >  {{whichdash}}  </p>
+      </ion-text>
+    </ion-label>
+
+
+    <ion-label fill="outline" slot="end"> 
+ <h4 *ngIf="walletbalance"> {{walletbalance.balanceSat | FromSatoshi | number: '1.0-9'}} </h4>
+    </ion-label>
+  </ion-item>
+
+  <ion-item >
+    <ion-icon name="warning" slot="start"></ion-icon>
+     <ion-label class="ion-text-wrap">
+      <ion-text color="primary">
+        <h3> Uncomfirmed </h3>
+      </ion-text>
+      <ion-text color="secondary">
+      <p >  {{whichdash}}  </p>
+      </ion-text>
+    </ion-label>
+
+    <ion-label  slot="end"> 
+         <p *ngIf="walletbalance"> {{walletbalance.unconfirmedBalanceSat | FromSatoshi | number: '1.0-9' }} </p>
+    </ion-label>
+  </ion-item>
+
+
+</ion-card>
+<ion-segment  [(ngModel)]="whichsegment">
+    <ion-segment-button value="safety">
+      <ion-label > Safety </ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="fees">
+      <ion-label > Fees </ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+<div *ngIf="whichsegment == 'safety'">
+<ion-card  class="datainput">
+<ion-card-header>
+<ion-card-title>
+Confirm the following for safety
+</ion-card-title>
+</ion-card-header>
+
+
+  <ion-item>
+    <ion-icon name="warning" slot="start"></ion-icon>
+    <ion-label class="ion-text-wrap">
+    <h2> I have saved the wallet wif </h2>
+    <p> Copy of wallet WIF has to be kept safely for future use </p>
+    </ion-label>
+    <ion-label slot="end" *ngIf="useraccount.safetyconfirmation != 'true'">
+    <ion-toggle [(ngModel)]="copyofwalletkeptsafe" ></ion-toggle>
+    </ion-label>
+  </ion-item>
+
+
+  <ion-item>
+    <ion-icon name="warning" slot="start"></ion-icon>
+    <ion-label class="ion-text-wrap">
+    <h2> I know how to restore wallet using WIF </h2>
+    <p> You need to use wallet WIF to restore wallet </p>
+    </ion-label>
+    <ion-label slot="end" *ngIf="useraccount.safetyconfirmation != 'true'">
+    <ion-toggle [(ngModel)]="knowwalletwifneededforrestore" ></ion-toggle>
+    </ion-label>
+  </ion-item>
+
+  <ion-item>
+    <ion-icon name="warning" slot="start"></ion-icon>
+    <ion-label class="ion-text-wrap">
+    <h2>I know how to keep wallet WIF safely </h2>
+    <p> Wallet WIF has to be protected </p>
+    </ion-label>
+    <ion-label slot="end"  *ngIf="useraccount.safetyconfirmation != 'true'">
+    <ion-toggle [(ngModel)]="wifisprotected" ></ion-toggle>
+    </ion-label>
+  </ion-item>
+  <ion-item>
+ <ion-button    [disabled]="useraccount.safetyconfirmation == 'true'" size="small" color="primary" (click)="safetyconfirmation()"> Confirm </ion-button>
+  </ion-item>
+
+
+</ion-card>
+
+</div>
+
+<div *ngIf="whichsegment == 'fees'">
+
+<ion-card>
+<ion-card-header>
+<ion-card-title>
+Sending DASH
+</ion-card-title>
+<ion-card-subtitle>
+Additional network fees of  {{whichdash}} {{useraccount.networkfees | FromSatoshi | number: '1.0-9' }}  is applicable
+</ion-card-subtitle>
+</ion-card-header>
+  <ion-item>
+  Service charges
+  </ion-item>
+  <ion-item>
+   <ion-label class="ion-text-wrap" >
+  <h3> Standard plan </h3>
+  <h4> Direct send </h4>
+    <p> {{whichdash}} {{useraccount.fees.stdfixed | FromSatoshi | number: '1.0-9' }}
+     +          {{useraccount.fees.stdpercentage  }}  % </p>
+  <h4> Reversible send </h4>
+    <p> {{whichdash}} {{useraccount.fees.rvtfixed | FromSatoshi | number: '1.0-9' }}
+       +         {{useraccount.fees.rvtpercentage  }}  % </p>
+   </ion-label>
+   </ion-item>
+   <ion-item>
+   <ion-label class="ion-text-wrap" >
+  <h3> Star plan </h3>
+  <h4> Direct send </h4>
+    <p> {{whichdash}} {{useraccount.starfees.stdfixed | FromSatoshi | number: '1.0-9' }}
+     +          {{useraccount.starfees.stdpercentage  }}  % </p>
+  <h4> Reversible send </h4>
+    <p> {{whichdash}} {{useraccount.starfees.rvtfixed | FromSatoshi | number: '1.0-9' }}
+       +         {{useraccount.starfees.rvtpercentage  }}  % </p>
+   </ion-label>
+   </ion-item>
+   <ion-item>
+
+   <ion-label class="ion-text-wrap" >
+  <h3> Galaxy plan </h3>
+  <h4> Direct send </h4>
+    <p> {{whichdash}} {{useraccount.galaxyfees.stdfixed | FromSatoshi | number: '1.0-9' }}
+     +          {{useraccount.galaxyfees.stdpercentage  }}  % </p>
+  <h4> Reversible send </h4>
+    <p> {{whichdash}} {{useraccount.galaxyfees.rvtfixed | FromSatoshi | number: '1.0-9' }}
+       +         {{useraccount.galaxyfees.rvtpercentage  }}  % </p>
+   </ion-label>
+
+
+
+   </ion-item>
+</ion-card>
+
+<ion-card>
+<ion-card-header>
+<ion-card-title>
+Receiving DASH
+</ion-card-title>
+<ion-card-subtitle>
+Additional network fees of  {{whichdash}} {{consumefees.networkfees | FromSatoshi | number: '1.0-9' }}  is applicable (*)
+</ion-card-subtitle>
+</ion-card-header>
+  <ion-item>
+  Service charges
+  </ion-item>
+   <ion-item>
+ <ion-button size="small" color="primary" (click)="getconsumefees()"> Get fees </ion-button>
+   </ion-item>
+
+  <ion-item>
+   <ion-label class="ion-text-wrap" >
+  <h3>  * Receive by reversibe address </h3>
+ 
+    <p> {{whichdash}} {{consumefees.fixed | FromSatoshi | number: '1.0-9' }}
+       +         {{consumefees.percentage  }}  % </p>
+  </ion-label>
+   </ion-item>
+   <ion-item>
+   <ion-label class="ion-text-wrap" >
+  <h3> Direct receive </h3>
+  <p> No charges </p>
+  </ion-label>
+   </ion-item>
+
+  <ion-item>
+   <ion-label class="ion-text-wrap" >
+  <h3> Changing WIF </h3>
+  <p> 1 WIF change is free. </p>
+  <p> There after 30 USD per WIF change. </p>
+  </ion-label>
+   </ion-item>
+
+
+</ion-card>
+
+<ion-card>
+   <ion-card-header>
+   <ion-card-title>
+   Exchanging other crypto with DASH   
+   </ion-card-title>
+   </ion-card-header>
+   <ion-item>
+  <p> 0.75% to 1% of the exchanged amount + a variable network fees </p> 
+  <p> Actual amount will be shown for confirmation before exchanging </p> 
+   </ion-item>
+</ion-card >
+<ion-card >
+<ion-card-header>
+  <ion-card-title>
+Conversion calculator 
+  </ion-card-title>
+<ion-card-subtitle>
+Place to check conversion values
+</ion-card-subtitle>
+</ion-card-header>
+    <ion-item  >
+   <ion-icon name="warning" slot="start"></ion-icon>
+    <ion-label class="ion-text-wrap" >
+    <h2> Enter in {{whichdash}} </h2>
+    <p> Amount in {{whichdash}} {{toamount | FromSatoshi | number: '1.0-9' }}</p>
+    </ion-label>
+
+
+       <ion-input  slot="end"   (ionChange)="dashamountChanged($event)" [(ngModel)]="toamountdash" placeholder="Enter in {{whichdash}} "></ion-input>
+
+       </ion-item>
+
+       <ion-item >
+
+   <ion-icon name="warning" slot="start"></ion-icon>
+    <ion-label class="ion-text-wrap" >
+    <h2> Enter in USD </h2>
+    <p> Amount in {{whichdash}} {{toamount | FromSatoshi | number: '1.0-9' }} </p>
+    </ion-label>
+       <ion-input  slot="end" (ionChange)="usdamountChanged($event)" [(ngModel)]="toamountusd" placeholder="Enter in USD "></ion-input>
+
+       </ion-item>
+       <ion-item>
+   <ion-icon name="warning" slot="start"></ion-icon>
+    <ion-label class="ion-text-wrap" >
+    <h2> Displayed in USD, Satoshi </h2>
+    <p> USD  {{toamount | ToFiatDash | number : '1.0-4'  }} 
+    <p> Satoshi   {{toamount | number: '1.0-0' }}  </p>
+    </ion-label>
+       </ion-item>
+
+
+</ion-card >
+
+
+</div>
+</ion-content>
+
+<!-- ion-footer>
+  <ion-toolbar color="primary" class="ion-text-center">
+    <ion-title>
+<sup> Made in </sup>  <img alt="91springboard" height="40"    src="assets/imgs/91springlogo.png"  float="left" />
+   </ion-title>
+  </ion-toolbar>
+</ion-footer -->
+

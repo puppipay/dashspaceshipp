@@ -1,0 +1,329 @@
+<ion-header>
+  <ion-toolbar >
+
+   <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+
+
+
+  <ion-segment  [(ngModel)]="whichsegment">
+    <ion-segment-button value="send">
+      <ion-label > Send funds </ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="messages">
+      <ion-label > Contracts </ion-label>
+    </ion-segment-button>
+  </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content *ngIf="issued">
+<div *ngIf="whichsegment == 'send'">
+
+  <ion-card >
+      <ion-card-header>
+     <ion-card-subtitle>{{whichdash}}</ion-card-subtitle>
+    <ion-card-title>Direct Send </ion-card-title>
+
+      </ion-card-header>
+      <ion-card-content >
+    <ion-item >
+ <ion-badge slot="start">1</ion-badge>
+
+    <ion-label class="ion-text-wrap"> <h4> Mention the receiver address and amount to send. Then click "DIRECT SEND" </h4> <p> After sending inform the receiver </p>
+    </ion-label>
+  </ion-item>
+
+       <ion-item >
+         <ion-label position="stacked"> Address to send </ion-label>
+      <ion-button  slot="end" size="small" color="primary" (click)="pastesendaddress()"> Paste </ion-button>
+         <ion-textarea rows="2" class="ion-text-wrap" type="text"  [(ngModel)]="toaddress" placeholder="Address to send "></ion-textarea>
+       </ion-item>
+
+       <ion-item >
+         <ion-label position="stacked"> Purpose to send </ion-label>
+         <ion-textarea rows="2" class="ion-text-wrap" type="text"  [(ngModel)]="directpurpose" placeholder="Purpose to send "></ion-textarea>
+       </ion-item>
+
+
+
+       <ion-item>
+
+
+   <ion-icon name="warning" slot="start"></ion-icon>
+    <ion-label class="ion-text-wrap">
+    <h2> Toggle to enter amount in {{whichdash}} </h2>
+    <p> Default amount taken in USD </p>
+    </ion-label>
+    <ion-label slot="end" >
+    <ion-toggle [(ngModel)]="enteringindash" ></ion-toggle>
+    </ion-label>
+
+       </ion-item>
+
+       <ion-item  *ngIf="enteringindash">
+   <ion-icon name="warning" slot="start"></ion-icon>
+    <ion-label class="ion-text-wrap" >
+    <h2> You are entering in {{whichdash}} </h2>
+    <p> Amount in {{whichdash}} {{toamount | FromSatoshi | number: '1.0-9' }},  Fees {{directfees | FromSatoshi | number: '1.0-5' }}</p>
+    </ion-label>
+
+
+       <ion-input  slot="end"   (ionChange)="dashamountChanged($event)" [(ngModel)]="toamountdash" placeholder="Enter in {{whichdash}} "></ion-input>
+
+       </ion-item>
+
+       <ion-item *ngIf="!enteringindash">
+
+   <ion-icon name="warning" slot="start"></ion-icon>
+    <ion-label class="ion-text-wrap" >
+    <h2> Amount in USD </h2>
+    <p> Amount automatically converted to {{whichdash}} {{toamount | FromSatoshi | number: '1.0-9' }},  Fees {{directfees | FromSatoshi | number: '1.0-5' }} </p>
+    </ion-label>
+       <ion-input  slot="end" (ionChange)="usdamountChanged($event)" [(ngModel)]="toamountusd" placeholder="Enter in USD "></ion-input>
+
+       </ion-item>
+
+      <ion-item *ngIf="walletbalance" >
+  <ion-label>
+     <h4> Available Balance: {{walletbalance.balanceSat  | FromSatoshi | number: '1.0-9' }} {{whichdash}}  </h4>
+<p> Unconfirmed : {{walletbalance.unconfirmedBalanceSat  | FromSatoshi | number: '1.0-9' }} {{whichdash}}  </p>
+  </ion-label>
+      </ion-item >
+
+  
+       <ion-item lines="full">
+      <ion-button [disabled]="toamount == 0 || toaddress == ''" slot="start" size="small" color="primary" (click)="senddirectpayment()"> Direct send </ion-button>
+      <ion-button [disabled]="directtxid==''" slot="end" size="small" color="primary" (click)="sharedirectsend()"> Inform </ion-button>
+       </ion-item>
+
+ <ion-item class="ion-text-wrap" lines="full">
+    <ion-icon name="star" slot="start"></ion-icon>
+
+     <ion-label class="ion-text-wrap">
+      <ion-text color="primary">
+        <h3> TRANSACTION ID  </h3>
+      </ion-text>
+      <ion-text color="secondary">
+      <p *ngIf="directtxid" >  {{directtxid}}  </p>
+      <p *ngIf="!directtxid" >  Place for transaction id  </p>
+      </ion-text>
+    </ion-label>
+
+
+
+      </ion-item >
+
+
+    </ion-card-content >
+  </ion-card >
+  <ion-card >
+      <ion-card-header>
+     <ion-card-subtitle>{{whichdash}}</ion-card-subtitle>
+    <ion-card-title >Reversible Send 
+
+   </ion-card-title>
+      </ion-card-header>
+      <ion-card-content >
+     <ion-item >
+ <ion-badge slot="start">2</ion-badge>
+
+    <ion-label class="ion-text-wrap"> <h4> Create self-escrow address. Then mention amount to send. Send by clicking "REVERSIBLE SEND" </h4> <p> Then inform receiver Contract and PIN </p> 
+    </ion-label>
+  </ion-item>
+
+
+
+
+      <ion-item class="ion-text-wrap">
+         <ion-label position="stacked"> Self escrow address </ion-label>
+      <ion-button  [disabled]="yettodepositfund" slot="end" size="small" color="primary" (click)="generateissuedaddress()"> Create </ion-button>
+         <ion-textarea rows="2" class="ion-text-wrap" type="text"  [(ngModel)]="issued.address" placeholder="Self escrow address" readonly></ion-textarea>
+      </ion-item >
+       <ion-item >
+         <ion-label position="stacked"> Purpose to send </ion-label>
+         <ion-textarea rows="2" class="ion-text-wrap" type="text"  [(ngModel)]="revertpurpose" placeholder="Purpose to send "></ion-textarea>
+       </ion-item>
+       <ion-item> 
+         <ion-label padding-bottom position="stacked"> Amount in {{whichdash}} <span *ngIf="torevertamount">( {{torevertamount  | ToFiatDash | number : '1.0-4'  }} USD) (Fees : {{revertfees | FromSatoshi | number: '1.0-5' }} {{whichdash}}) </span> </ion-label>
+         <ion-input   (ionChange)="dashrevertamountChanged($event)" [(ngModel)]="torevertamountdash" placeholder=" Enter in {{whichdash}}  "></ion-input>
+       </ion-item>
+       <ion-item lines="full">
+      <ion-button [disabled]="torevertamount == 0" slot="start" size="small" color="primary" (click)="sendreversiblepayment()"> Reversible send </ion-button>
+       </ion-item>
+      <ion-item *ngIf="walletbalance" >
+  <ion-label>
+     <h4> Available Balance: {{walletbalance.balanceSat  | FromSatoshi | number: '1.0-9' }} {{whichdash}}  </h4>
+<p> Unconfirmed : {{walletbalance.unconfirmedBalanceSat  | FromSatoshi | number: '1.0-9' }} {{whichdash}}  </p>
+  </ion-label>
+      </ion-item >
+<ion-item>
+    <ion-badge slot="start">2.1</ion-badge>
+  <ion-label >
+  <p>    Share link below
+  </p>
+  </ion-label>
+</ion-item>
+
+       <ion-item lines="full">
+      <ion-button [disabled]="issued.address == ''" slot="start" size="small" color="primary" (click)="sharereversiblepaymentlink()"> payment link </ion-button>
+      <ion-button [disabled]="issued.address == ''"  slot="end" size="small" color="primary" (click)="sharepin()"> Payment PIN </ion-button>
+      <!-- ion-button [disabled]="issued.address == ''" slot="end" size="small" color="primary" (click)="sharereversibleqrcode()"> Share QRcode </ion-button -->
+       </ion-item>
+  <ion-item>
+    <ion-badge slot="start">2.2</ion-badge>
+         <ion-label > <p> Share Payment </p> </ion-label>
+ <ion-button    [disabled]="issued.address == ''" slot="end" size="small" color="primary" (click)="sharepaymentqrcode()">  QRcode </ion-button>
+      </ion-item>
+
+
+      </ion-card-content >
+    </ion-card >
+
+    <ion-card >
+   <ion-card-header>
+     <ion-card-subtitle>{{whichdash}}</ion-card-subtitle>
+    <ion-card-title >Transaction status </ion-card-title>
+      </ion-card-header>
+      <ion-item class="ion-text-wrap">
+    <ion-icon name="star" slot="start"></ion-icon>
+
+     <ion-label class="ion-text-wrap">
+      <ion-text color="primary">
+        <h3> TRANSACTION ID  </h3>
+      </ion-text>
+      <ion-text color="secondary">
+      <p *ngIf="txid" >  {{txid}}  </p>
+      <p *ngIf="!txid" >  Place for transaction id  </p>
+      </ion-text>
+    </ion-label>
+
+
+
+      </ion-item >
+     <ion-item >
+      <ion-button  size="small" color="primary" (click)="getwalletbalance()"> Wallet balance</ion-button>
+      <ion-button  [disabled]="issued.address == ''" size="small" color="primary" (click)="getaddressbalance()"> Escrow balance</ion-button>
+      </ion-item >
+
+      <ion-item *ngIf="addressbalance">
+  <ion-label>
+     <h4> Escrow Address Balance: {{addressbalance.balanceSat | FromSatoshi | number: '1.0-9' }} {{whichdash}} </h4>
+<p> Escrow Unconfirmed : {{addressbalance.unconfirmedBalanceSat | FromSatoshi | number: '1.0-9' }} {{whichdash}} </p>
+  </ion-label>
+      </ion-item >
+      <ion-item *ngIf="walletbalance" >
+  <ion-label>
+     <h4> Wallet Balance: {{walletbalance.balanceSat  | FromSatoshi | number: '1.0-9' }} {{whichdash}}  </h4>
+<p> Wallet Unconfirmed : {{walletbalance.unconfirmedBalanceSat  | FromSatoshi | number: '1.0-9' }} {{whichdash}}  </p>
+  </ion-label>
+      </ion-item >
+
+    </ion-card>
+
+
+
+    <ion-card class="datainput">
+      <ion-card-header>
+  <ion-card-subtitle>Lock for Escrow Address </ion-card-subtitle>
+    <ion-card-title> 
+     Contract and PIN 
+    </ion-card-title> 
+
+      </ion-card-header>
+
+      <ion-card-content >
+            <ion-item>
+      <ion-button [disabled]="issued.address == ''" slot="end" size="small" color="primary" (click)="sharecontract()"> Share </ion-button>
+        <ion-badge slot="start">1</ion-badge>
+       <ion-label class="ion-text-wrap">
+      <ion-text color="primary">
+        <h3>Locking contract </h3>
+      </ion-text>
+      <ion-text color="secondary">
+      <p *ngIf="issued.message">{{issued.message}}</p>
+      <p *ngIf="!issued.message">Place for contract </p>
+      </ion-text>
+    </ion-label>
+
+
+            </ion-item>
+
+
+            <ion-item>
+      <ion-button [disabled]="issued.address == ''" slot="end" size="small" color="primary" (click)="sharepin()"> Share </ion-button>
+        <ion-badge slot="start">2</ion-badge>
+       <ion-label class="ion-text-wrap">
+      <ion-text color="primary">
+        <h3>UnLocking PIN </h3>
+      </ion-text>
+      <ion-text color="secondary">
+      <p *ngIf="issued.pin">{{issued.pin}}</p>
+      <p *ngIf="!issued.pin">Place for pin </p>
+      </ion-text>
+    </ion-label>
+
+
+           </ion-item>
+
+      <ion-item *ngIf="issued.fullredeemurl">
+         <ion-label position="stacked"> FullRedeem sharable link </ion-label>
+         <ion-input  [(ngModel)]="issued.fullredeemurl" placeholder="Place to Display Escrow Address"></ion-input>
+      </ion-item >
+
+      </ion-card-content>
+    </ion-card>
+      <ion-item >
+      </ion-item >
+
+
+</div>
+<div *ngIf="whichsegment == 'messages'">
+      <ion-item >
+      <ion-button slot="end" size="small" color="primary" (click)="clearall()"> Clear all </ion-button>
+      <ion-button slot="end" size="small" color="primary" (click)="refresh()"> Refresh </ion-button>
+      </ion-item >
+
+  <ion-item *ngIf="sendingmessages.length == 0" >
+  No messages
+    </ion-item  >
+         
+ <ion-list> 
+
+
+    <ion-item *ngFor="let msg of sendingmessages; let i = index" >
+          <ion-label  text-wrap>
+            <h3> Ref:          {{msg.id}} </h3>
+            <h3> {{i+1}}: Contract:          {{msg.message}}
+  </h3>
+            <h4> Escrow address:          {{msg.address}} </h4>
+            <h4> Payment link :     {{msg.shorturl}} </h4>
+            <h4> Status :     {{msg.status}} </h4>
+            <h4> Balance :     {{msg.balance | FromSatoshi | number: '1.0-9' }}  </h4>
+            <p>
+          PIN: {{msg.pin }}
+            </p>
+      <ion-button slot="end" size="small" color="primary" (click)="shareold(msg)"> Share </ion-button>
+      <ion-button slot="end" size="small" color="primary" (click)="reversepayment(msg)"> Reverse </ion-button>
+      <ion-button slot="end" size="small" color="primary" (click)="deleteold(i)"> Delete </ion-button>
+      <ion-button slot="end" size="small" color="primary" (click)="refresh()"> Refresh </ion-button>
+      <ion-button slot="end" size="small" color="primary" (click)="getescrowbalance(msg)"> Status </ion-button>
+       </ion-label>
+    </ion-item>
+
+ </ion-list> 
+
+</div>
+</ion-content>
+
+<!-- ion-footer>
+  <ion-toolbar color="primary" class="ion-text-center">
+    <ion-title>
+<sup> Made in </sup>  <img alt="91springboard" height="40"    src="assets/imgs/91springlogo.png"  float="left" />
+   </ion-title>
+  </ion-toolbar>
+</ion-footer -->
+
+

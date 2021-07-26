@@ -1,0 +1,50 @@
+<ion-header>
+	<ion-toolbar color="primary">
+		<ion-menu-toggle>
+<ion-button>
+			<ion-icon name="menu"></ion-icon>
+		</ion-button>
+</ion-menu-toggle>
+		<ion-title>PayPal</ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+<!-- ion-card *ngIf="userinfoready">
+	<ion-card-header>
+         Plan: {{userinfo.myuserinfo.activeplanname}}
+	</ion-card-header>
+	<ion-card-content>
+         Plan description: {{userinfo.myuserinfo.activeplandescription}}
+         <h3>Starts from: {{userinfo.myuserinfo.planstartdate  |date: "yyyy/MM/dd"}} </h3>
+         <h3>Remaining days: {{userinfo.myuserinfo.plandays}}
+</h3>
+<h3>
+         Remaining transactions: {{userinfo.myuserinfo.plantransactions}}
+</h3>
+	</ion-card-content>
+</ion-card>
+<ion-list *ngFor="let item of itemplans">
+<ion-card>
+	<ion-card-header>
+         {{item.plandescription}}
+	</ion-card-header>
+	<ion-card-content>
+         {{item.description}}
+        <ion-label class="ion-text-wrap">
+                 <h3> {{item.price}} {{item.unit}} </h3>
+            </ion-label>
+        <ion-item>
+        <ion-button  item-left small class="colorbutton" (click)="select(item)">Select</ion-button>
+   <ion-checkbox checked="true" *ngIf="itemselected.plandescription == item.plandescription"  > </ion-checkbox>
+            <ion-label item-right *ngIf="itemselected.plandescription == item.plandescription">  Pay below
+            </ion-label>
+        </ion-item>
+
+	</ion-card-content>
+</ion-card>
+</ion-list -->
+
+<ngx-paypal [config]="payPalConfig"></ngx-paypal>
+
+</ion-content>

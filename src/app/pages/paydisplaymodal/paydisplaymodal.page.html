@@ -1,0 +1,47 @@
+
+
+<ion-content>
+
+  <ion-item>
+    <ion-label > {{item.title}}
+    </ion-label>
+  <ion-button slot="end"   (click)="dismiss()">
+        <ion-icon name="close" expand="icon-only"></ion-icon><span> Done </span>
+  </ion-button>
+  </ion-item>
+
+  <ion-card-content >
+    <h4> {{item.topmessage}} </h4>
+
+  <ion-item>
+
+ <ngx-qrcode 
+      [qrc-element-type]="elementType" 
+      [qrc-value] = "item.messagepin"
+      qrc-class = "aclass"
+      qrc-errorCorrectionLevel = "L">
+</ngx-qrcode>
+
+    <ion-button (click)="messagepinqrsocialshare()" fill="outline" slot="end">Share </ion-button>
+  </ion-item>
+  <ion-item>
+    <ion-label class="ion-text-wrap"> DASH address to verify
+     <p>  {{item.addresstoverify}} </p>
+    </ion-label>
+    <ion-button (click)="dashaddresssocialshare()" fill="outline" slot="end" >Share </ion-button>
+  </ion-item>
+</ion-card-content>
+
+
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar color="primary" class="ion-text-center">
+    <h4> {{item.bottommessage}} </h4>
+  <ion-button slot="end"   (click)="dismiss()">
+        <ion-icon name="close" expand="icon-only"></ion-icon><span> Cancel </span>
+  </ion-button>
+  </ion-toolbar>
+</ion-footer >
+
+

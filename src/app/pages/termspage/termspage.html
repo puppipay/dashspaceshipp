@@ -1,0 +1,103 @@
+<ion-header>
+ <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title> <sup> Terms and Condition </sup> </ion-title>
+
+    <ion-buttons slot="secondary">
+            <ion-button  *ngIf="useraccount.termsagreed == 'no'"   (click)="accept()">
+                Accept
+            </ion-button>
+            <ion-button  (click)="gotohome()">
+                Home
+            </ion-button>
+        </ion-buttons>
+
+
+ </ion-toolbar>
+</ion-header>
+ 
+ 
+<ion-content padding>
+
+
+    <ion-grid class="securebackground" >
+           <ion-row justify-content-center align-items-center>
+            <ion-col >
+  <ion-item-divider class="ion-text-center" class="roundedge">
+  <h2 > Terms of usage </h2>
+            </ion-item-divider>
+<ion-card class="ion-text-center">
+  <ion-card-title > Usage  </ion-card-title>
+  <ion-card-content>
+ <div class="usage"  [innerHTML]="usagedata"  > </div>
+  </ion-card-content>
+</ion-card >
+<ion-card class="ion-text-center">
+  <ion-card-title > Warranty, Privacy  </ion-card-title>
+  <ion-card-content>
+ <div class="usage"  [innerHTML]="warrantydata"  > </div>
+  </ion-card-content>
+</ion-card >
+
+
+  <ion-item-divider class="ion-text-center" class="roundedge">
+  <h2 > Terms of using Changelly service  </h2>
+            </ion-item-divider>
+ <ion-card class="ion-text-center">
+  <ion-card-title > Changely terms </ion-card-title>
+  <ion-card-content>
+ <div class="usage"  [innerHTML]="changellydata"  > </div>
+  </ion-card-content>
+
+</ion-card>
+ </ion-col>
+        </ion-row>
+        </ion-grid>
+    <ion-grid class="securebackground" >
+           <ion-row justify-content-center align-items-center>
+            <ion-col >
+  <ion-item-divider class="ion-text-center" class="roundedge">
+  <h2 > Fees and charges. </h2>
+            </ion-item-divider>
+    <ion-card>
+  <ion-card-content>
+ <div class="usage"  [innerHTML]="feesdata"  > </div>
+  </ion-card-content>
+
+    </ion-card>
+
+
+ </ion-col>
+        </ion-row>
+
+  <ion-row *ngIf="useraccount.termsagreed == 'no'">
+
+ <ion-col>
+            <ion-button     (click)="accept()">
+                Accept
+            </ion-button>
+
+
+ </ion-col>
+        </ion-row>
+
+        </ion-grid>
+
+
+
+
+
+
+
+
+
+ 
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar color="primary" text-center>
+  </ion-toolbar>
+</ion-footer>
+

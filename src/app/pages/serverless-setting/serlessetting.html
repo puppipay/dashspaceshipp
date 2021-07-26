@@ -1,0 +1,134 @@
+<!--
+  Generated template for the DroneLockPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+<ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+        <ion-title>
+            <ion-label  >Setting</ion-label>
+        </ion-title>
+
+
+        <ion-buttons slot="secondary">
+            <ion-button  (click)="gotohome()">
+                HOME
+            </ion-button>
+        </ion-buttons>
+
+    </ion-toolbar>
+
+</ion-header>
+
+
+<ion-content >
+
+
+
+
+  <ion-card>
+   <ion-card-header>
+    <ion-card-subtitle >Phone number verification </ion-card-subtitle>
+   </ion-card-header>
+   <ion-card-content>
+
+  <ion-item>
+    <ion-label position="stacked">  
+     <ion-badge > 1 </ion-badge>
+     PHONE NUMBER
+    </ion-label>
+    <ion-input   type="tel" [(ngModel)]="phonecountry" maxlength="2" placeholder="Country code like 91"></ion-input>
+    <ion-input   type="tel" [(ngModel)]="phone" minlength="5" placeholder="Phone number like 12345.."></ion-input>
+
+  </ion-item>
+  <ion-item>
+  <ion-text class="error" color="danger" text-center>{{error}}</ion-text>
+  </ion-item>
+
+  <ion-item lines="none">
+     <div id="recaptcha-container"></div>
+    
+  </ion-item>
+
+  <ion-item lines="full">
+    <ion-button   fill="outline"  (click)="sendLoginCode()" >Verify </ion-button>
+  </ion-item>
+  <ion-item>
+    <ion-label position="stacked" >
+     <ion-badge > 2 </ion-badge>
+      OTP
+    </ion-label>
+    <ion-input  type="number" [(ngModel)]="otp" placeholder="Place for OTP "></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-icon name="arrow-dropright" slot="start"></ion-icon>
+    <ion-button fill="outline"  (click)="verifyLoginCode()" >Submit </ion-button>
+  </ion-item>
+   </ion-card-content>
+
+  </ion-card>
+
+
+
+
+
+
+
+
+
+    <ion-list no-lines>
+   <ion-item>
+                <ion-button small (click)="clearAllCache()" class="colorbutton"> Clear cache
+                </ion-button>
+   </ion-item>
+   <ion-item>
+                <ion-button  small (click)="gotokyc()" class="colorbutton"> KYC
+                </ion-button>
+   </ion-item>
+
+   <ion-item>
+                <ion-button  small (click)="gototerms()" class="colorbutton"> Terms
+                </ion-button>
+   </ion-item>
+
+
+    </ion-list>
+<!--div *ngIf="whichsegment == 'plans'">
+   <ion-item>
+  Standard
+ Direct send 0.02 DASH + 2% 
+ Reversible send 
+ 
+   </ion-item>
+   <ion-item>
+  Star plan
+ 0.02 DASH + 1% 
+   </ion-item>
+   <ion-item>
+  Galaxy plan
+ 0.22 DASH + 0.7% 
+   </ion-item>
+   <ion-item>
+  Receiving fees
+   </ion-item>
+
+</div>
+<div *ngIf="whichsegment == 'terms'">
+   <ion-item>
+                <ion-button  small (click)="gototerms()" class="colorbutton"> Terms
+                </ion-button>
+   </ion-item>
+</div -->
+</ion-content>
+<ion-footer>
+  <ion-toolbar color="primary" class="ion-text-center">
+    <!-- ion-title>
+<sup> Made in </sup>  <img alt="91springboard" height="40"    src="assets/imgs/91springlogo.png"  float="left" />
+   </ion-title -->
+  </ion-toolbar>
+</ion-footer>
+

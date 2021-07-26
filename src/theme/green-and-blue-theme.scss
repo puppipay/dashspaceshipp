@@ -1,0 +1,48 @@
+ion-menu {
+
+  ion-content {
+    @include linear-gradient(left,$green-and-blue);
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    font-size: 1.8rem;
+
+    div.scroll-content {
+      color: white;
+
+      ion-list .item {
+        color: white;
+        background: transparent;
+      }
+    }
+  }
+  .bar-buttons, .toolbar-title {
+    color: white;
+  }
+}
+
+$toolbar-background:  #64b3f4;
+
+.toolbar-background1 {
+    background: -webkit-linear-gradient(-55deg,  #c2e59c 35% , #64b3f4 100% ) !important;
+// #c2e59c , #64b3f4
+
+}
+.toolbar-background2{ 
+    @include linear-gradient(left,$green-and-blue);
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+}
+
+
+.green-and-blue-theme {
+
+  ion-content {
+    @include linear-gradient(left,$green-and-blue);
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+  }
+
+}

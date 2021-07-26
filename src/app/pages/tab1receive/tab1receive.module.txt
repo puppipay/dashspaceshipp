@@ -1,0 +1,20 @@
+import { IonicModule } from '@ionic/angular';
+import { RouterModule } from '@angular/router';
+import { NgModule } from '@angular/core';
+import { PipesModule } from '../pipes/pipes.module';
+
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Tab1receivePage } from './tab1receive.page';
+
+@NgModule({
+  imports: [
+    IonicModule,
+    PipesModule,
+    CommonModule,
+    FormsModule,
+    RouterModule.forChild([{ path: '', component: Tab1receivePage }])
+  ],
+  declarations: [Tab1receivePage ]
+})
+export class Tab1receivePageModule {}

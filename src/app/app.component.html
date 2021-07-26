@@ -1,0 +1,92 @@
+<ion-app>
+
+ <div *ngIf="showSplash" class="splash"> 
+    <sk-rotating-plane  ></sk-rotating-plane>
+ </div>
+
+  <ion-split-pane contentId="main-content"  class="container" *ngIf="!showSplash" >
+    <ion-menu contentId="main-content">
+      <!--ion-header>
+        <ion-toolbar>
+          <ion-title>Menu</ion-title>
+        </ion-toolbar>
+      </ion-header -->
+      <ion-content>
+<ion-item class="menu-header">
+<ion-icon size="large" name="ios-rocket" slot="start"></ion-icon>
+       <ion-label class="ion-text-wrap">
+      <ion-text >
+        <h3> {{menutitle}}  </h3>
+      </ion-text>
+      <ion-text >
+      <p >  Wallet </p>
+      </ion-text>
+    </ion-label>
+
+
+      <!--ion-title>Menu</ion-title -->
+  </ion-item>
+
+        <ion-list>
+      <ion-list-header >
+            Welcome
+        </ion-list-header>
+
+          <ion-menu-toggle auto-hide="false" *ngFor="let p of puppiaccountPages">
+            <ion-item  [routerDirection]="'root'" [routerLink]="[p.url]">
+              <ion-icon slot="start" [name]="p.icon"></ion-icon>
+              <ion-label>
+                {{p.title}}
+              </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+          <ion-menu-toggle auto-hide="false" *ngFor="let p of puppiworkPages">
+            <ion-item  [routerDirection]="'root'" [routerLink]="[p.url]">
+              <ion-icon slot="start" [name]="p.icon"></ion-icon>
+              <ion-label>
+                {{p.title}}
+              </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+
+
+      <ion-list-header>
+            Records
+        </ion-list-header>
+
+          <ion-menu-toggle auto-hide="false" *ngFor="let p of puppirecordPages">
+            <ion-item  [routerDirection]="'root'" [routerLink]="[p.url]">
+              <ion-icon slot="start" [name]="p.icon"></ion-icon>
+              <ion-label>
+                {{p.title}}
+              </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+
+      <ion-list-header>
+            Misc
+        </ion-list-header>
+            <ion-item (click)="exitfunction()" >
+              <ion-icon slot="start" name="exit"></ion-icon>
+              <ion-label  >
+                Exit
+              </ion-label>
+            </ion-item>
+          <ion-menu-toggle auto-hide="false" *ngFor="let p of puppisettingPages">
+            <ion-item  [routerDirection]="'root'" [routerLink]="[p.url]">
+              <ion-icon slot="start" [name]="p.icon"></ion-icon>
+              <ion-label>
+                {{p.title}}
+              </ion-label>
+            </ion-item>
+
+          </ion-menu-toggle>
+
+
+        </ion-list>
+      </ion-content>
+    </ion-menu>
+    <ion-router-outlet id="main-content"></ion-router-outlet>
+
+  </ion-split-pane >
+</ion-app>

@@ -1,0 +1,45 @@
+ion-menu {
+
+  ion-content {
+    @include linear-gradient(left,$facebook-messenger);
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    font-size: 1.8rem;
+
+    div.scroll-content {
+      color: white;
+
+      ion-list .item {
+        color: white;
+        background: transparent;
+      }
+    }
+  }
+
+  .bar-buttons, .toolbar-title {
+    color: white;
+  }
+}
+
+.facebook-messenger-theme {
+
+  ion-content {
+    @include linear-gradient(left,$facebook-messenger);
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+  }
+
+}
+
+.roundedge {
+    border-radius: 30px !important;
+    padding-left: 10px !important;
+    margin-bottom: 10px;
+    font-size: 17px;
+    color: #424242;
+    background-color: #ccc;
+
+}
+

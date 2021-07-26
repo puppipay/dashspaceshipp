@@ -1,0 +1,273 @@
+<ion-header>
+  <ion-toolbar >
+  <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+
+  <ion-segment  [(ngModel)]="whichsegment">
+    <ion-segment-button value="receive">
+      <ion-label > Receive funds </ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="messages">
+      <ion-label > Received funds </ion-label>
+    </ion-segment-button>
+  </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+
+
+
+<ion-content>
+<div *ngIf="whichsegment == 'receive'">
+    <ion-card >
+
+    <ion-card-header>
+    <ion-card-subtitle> {{whichdash}} WALLET
+
+    </ion-card-subtitle>
+  </ion-card-header>
+  <ion-card-content >
+
+  <ion-item >
+    <ion-icon name="wifi" slot="start"></ion-icon>
+    <ion-label class="ion-text-wrap"> <h4> Address  </h4> <p> {{walletaddress}} </p>
+    </ion-label>
+    <ion-label slot="end" >
+ <ion-button   size="small" color="primary" (click)="getwalletbalance()"> Balance </ion-button>
+    </ion-label>
+  </ion-item>
+
+  <ion-item >
+    <ion-icon name="wine" slot="start"></ion-icon>
+    <ion-label class="ion-text-wrap">
+      <ion-text color="primary">
+        <h3> Balance </h3>
+      </ion-text>
+      <ion-text color="secondary">
+      <p >  {{whichdash}}  </p>
+      </ion-text>
+    </ion-label>
+
+    <ion-label fill="outline" slot="end"> 
+ <h4 *ngIf="walletbalance">  {{walletbalance.balanceSat | FromSatoshi | number: '1.0-9' }} </h4>
+    </ion-label>
+  </ion-item>
+
+  <ion-item class="activated">
+    <ion-icon name="warning" slot="start"></ion-icon>
+    <ion-label class="ion-text-wrap">
+      <ion-text color="primary">
+        <h3> Unconfirmed </h3>
+      </ion-text>
+      <ion-text color="secondary">
+      <p >  {{whichdash}}  </p>
+      </ion-text>
+    </ion-label>
+
+    <ion-label  slot="end"> 
+         <p *ngIf="walletbalance">  {{walletbalance.unconfirmedBalanceSat | FromSatoshi | number: '1.0-9' }} </p> 
+    </ion-label>
+  </ion-item>
+
+
+      </ion-card-content >
+    </ion-card >
+
+    <ion-card class="datainput">
+      <ion-card-header>
+    <ion-card-subtitle>Direct Receive Funds </ion-card-subtitle>
+    <ion-card-title>Address to receive
+
+    </ion-card-title>
+      </ion-card-header>
+     <ion-item >
+ <ion-badge slot="start">1</ion-badge>
+
+    <ion-label class="ion-text-wrap"> <h4> Wallet address below  </h4> <p> {{walletaddress}} </p>
+    </ion-label>
+
+  </ion-item>
+  <ion-item>
+        <ion-button  slot="start" size="small" color="primary" (click)="copyaddress()"> Copy </ion-button>
+    <ion-label slot="end" >
+ <ion-button   size="small" color="primary" (click)="presentModalDash()">  QRcode </ion-button>
+    </ion-label>
+  </ion-item>
+
+
+
+    </ion-card >
+
+
+    <ion-card class="datainput">
+      <ion-card-header>
+    <ion-card-subtitle>Receive funds from Escrow Address</ion-card-subtitle>
+    <ion-card-title >Contract and PIN</ion-card-title>
+
+      </ion-card-header>
+           <ion-item>
+    <ion-badge slot="start">2.1</ion-badge>
+
+    <ion-label class="ion-text-wrap"> <h4> Enter Contract/PIN and accept funds  </h4>
+    </ion-label>
+
+
+
+           </ion-item>
+            <ion-item>
+    <ion-badge slot="start">2.2</ion-badge>
+         <ion-label > Scan Payment </ion-label>
+ <ion-button   slot="end" size="small" color="primary" (click)="goToBarcodeScan()">  QRcode </ion-button>
+           </ion-item>
+            <ion-item>
+         <ion-label position="stacked"> Enter contract below </ion-label>
+        <ion-button  slot="end" size="small" color="primary" (click)="pastecontract()"> Paste </ion-button>
+
+            <ion-textarea rows="8" class="ion-text-wrap" type="text" [(ngModel)]="revertible.message"
+                          placeholder="Enter contract "></ion-textarea>
+            </ion-item>
+
+
+            <ion-item>
+         <ion-label padding-bottom position="stacked"> Enter unlock PIN below </ion-label>
+        <ion-button  slot="end" size="small" color="primary" (click)="pastepin()"> Paste </ion-button>
+         <ion-input  [(ngModel)]="revertible.pin" placeholder="Enter PIN "></ion-input>
+           </ion-item>
+
+<ion-item >
+         <ion-label position="stacked"> Purpose to receive </ion-label>
+         <ion-textarea rows="2" class="ion-text-wrap" type="text"  [(ngModel)]="purpose" placeholder="Purpose to reveive "></ion-textarea>
+       </ion-item>
+
+           <ion-item>
+      <ion-button [disabled]="revertible.pin == '' || revertible.message == ''" size="small" color="primary" (click)="consumemessage()"> Accept funds </ion-button>
+
+           </ion-item>
+    </ion-card>
+
+    <ion-card >
+      <ion-card-header>
+     <ion-card-subtitle>{{whichdash}}</ion-card-subtitle>
+    <ion-card-title >Transaction status </ion-card-title>
+
+      </ion-card-header>
+
+      <ion-item >
+      <ion-icon name="star" slot="start"></ion-icon>
+     
+     <ion-label class="ion-text-wrap">
+      <ion-text color="primary">
+        <h3> TRANSACTION ID  </h3>
+      </ion-text>
+      <ion-text color="secondary">
+      <p *ngIf="transacted.txid" >  {{transacted.txid}}  </p>
+      <p *ngIf="!transacted.txid" >  Place for transaction id  </p>
+      </ion-text>
+    </ion-label>
+
+
+      </ion-item>
+      <ion-item >
+      <ion-icon name="star" slot="start"></ion-icon>
+       <ion-label class="ion-text-wrap">
+      <ion-text color="primary">
+        <h3> Amount, fees </h3>
+      </ion-text>
+      <ion-text color="secondary">
+      <p >  {{whichdash}}  
+      </p>
+      <p>
+ Fees {{transacted.fees | FromSatoshi | number: '1.0-5' }} 
+
+      </p>
+
+      </ion-text>
+    </ion-label>
+
+    <ion-label fill="outline" slot="end"> 
+      Amt {{transacted.amount | FromSatoshi | number: '1.0-9' }} 
+
+    </ion-label>
+      </ion-item>
+
+      <ion-item >
+      <ion-icon name="wine" slot="start"></ion-icon>
+       <ion-label class="ion-text-wrap">
+      <ion-text color="primary">
+        <h3> From address </h3>
+      </ion-text>
+      <ion-text color="secondary">
+      <p *ngIf="transacted.fromaddress" >  {{transacted.fromaddress}}  </p>
+      <p *ngIf="!transacted.fromaddress" >  Place for from address  </p>
+      </ion-text>
+    </ion-label>
+    <ion-label fill="outline" slot="end"> 
+      <ion-icon name="arrow-forward" ></ion-icon>
+      <ion-icon name="arrow-forward" ></ion-icon>
+      <ion-icon name="arrow-forward" ></ion-icon>
+    </ion-label>
+
+
+      </ion-item >
+
+
+      <ion-item >
+      <ion-icon name="arrow-forward" slot="start"></ion-icon>
+       <ion-label class="ion-text-wrap">
+      <ion-text color="primary">
+        <h3> To address </h3>
+      </ion-text>
+      <ion-text color="secondary">
+      <p *ngIf="transacted.toaddress" >  {{transacted.toaddress}}  </p>
+      <p *ngIf="!transacted.toaddress" >  Place for to address  </p>
+      </ion-text>
+    </ion-label>
+      </ion-item >
+
+
+
+    </ion-card>
+
+
+</div>
+
+<div *ngIf="whichsegment == 'messages'">
+ <ion-item >
+      <ion-button slot="end" size="small" color="primary" (click)="clearall()"> Clear all </ion-button>
+      <ion-button slot="end" size="small" color="primary" (click)="refresh()"> Refresh </ion-button>
+      </ion-item >
+
+
+  <ion-item *ngIf="receivedmessages.length == 0" >
+  No messages
+    </ion-item  >
+
+ <ion-list>
+
+    <ion-item *ngFor="let msg of receivedmessages" >
+          <ion-label  text-wrap>
+            <h3> Ref:          {{msg.id}} </h3>
+            <h3> Message:          {{msg.message}} </h3>
+            <h4> From address:          {{msg.fromaddress}} </h4>
+            <h4> Txid :          {{msg.txid}} </h4>
+            <h4> Amount :          {{msg.amount | FromSatoshi | number: '1.0-9'}} </h4>
+            <h4> Fee :          {{msg.fees | FromSatoshi | number: '1.0-9'}} </h4>
+            <p>
+          PIN: {{msg.pin }}
+            </p>
+       </ion-label>
+    </ion-item>
+
+ </ion-list>
+</div>
+
+</ion-content>
+<!-- ion-footer>
+  <ion-toolbar color="primary" class="ion-text-center">
+    <ion-title>
+<sup> Made in </sup>  <img alt="91springboard" height="40"    src="assets/imgs/91springlogo.png"  float="left" />
+   </ion-title>
+  </ion-toolbar>
+</ion-footer -->
+

@@ -1,0 +1,8 @@
+{
+  "name": "dashspaceship",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular",
+  "id": "2b1f1a8e"
+}

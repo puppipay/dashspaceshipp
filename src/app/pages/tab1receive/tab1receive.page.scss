@@ -1,0 +1,17 @@
+div { font-size: 0.875em; } // 14px 
+
+.welcome-card ion-img {
+  max-height: 35vh;
+  overflow: hidden;
+}
+
+ion-textarea {
+    background: var(--ion-color-medium);
+    border-radius: 20px;
+}
+
+
+ion-input {
+    background: var(--ion-color-medium);
+    border-radius: 20px;
+}

@@ -1,0 +1,63 @@
+<ion-toolbar >
+
+   <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+
+   <ion-title>
+      Verify email      
+    </ion-title>
+
+
+  </ion-toolbar>
+
+<ion-content>
+    <ion-card>
+   <ion-card-header>
+     <ion-card-subtitle>Verify email</ion-card-subtitle>
+    <ion-card-title>Enter email-id provided </ion-card-title>
+
+      </ion-card-header>
+      <ion-card-content>
+
+
+     <ion-item >
+    <ion-label padding-bottom position="stacked" > Email </ion-label>
+      <ion-input readonly type="email" placeholder="Email" [(ngModel)]="email" > </ion-input>
+  </ion-item>
+  <ion-item> <p> You would have received email with link to confirm </p> </ion-item>
+
+  <ion-item>
+            <ion-button  (click)="confirmverified()" > Confirm verifed </ion-button>
+  </ion-item>
+  <ion-item> <ion-text class="error" color="danger"  text-center>{{error}}</ion-text> </ion-item>
+  <ion-item>
+<ion-text text-center class="block">Request verification email
+<ion-button (click)="sendEmailVerification()" >Click here </ion-button>
+</ion-text>
+  </ion-item>
+  <ion-item>
+<ion-text text-center class="block">Don't have an account yet ?
+<ion-button class="bold" routerLink="/signup">Signup here</ion-button></ion-text>
+
+  </ion-item >
+  <ion-item>
+<ion-text text-center class="block">Already have account 
+<ion-button routerLink="/login">Login here </ion-button>
+</ion-text>
+  </ion-item >
+
+  </ion-card-content>
+    </ion-card>
+</ion-content>
+
+
+<ion-footer>
+  <ion-toolbar color="primary" class="ion-text-center">
+    <ion-title>
+<sup> Made in </sup>  <img alt="91springboard" height="40"    src="assets/imgs/91springlogo.png"  float="left" />
+   </ion-title>
+  </ion-toolbar>
+</ion-footer>
+
+

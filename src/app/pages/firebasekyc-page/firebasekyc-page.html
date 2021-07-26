@@ -1,0 +1,111 @@
+<ion-header>
+ <ion-toolbar >
+   <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+
+        <ion-title small>
+            <sup>  KYC document upload </sup>
+        </ion-title>
+
+    </ion-toolbar>
+
+</ion-header>
+
+<ion-content>
+  <ion-list>
+<ion-card class="ion-text-center" *ngIf=" kycdata != null && kycstatus.kycdone == 'true'">
+    <ion-item>
+ <ion-label> 
+ KYC is done
+ </ion-label> 
+    </ion-item>
+</ion-card >
+ 
+<ion-card class="ion-text-center" *ngIf=" loggedinuser == null ">
+    <ion-item>
+ <ion-label> 
+ User not loggedin
+ </ion-label> 
+    </ion-item>
+</ion-card >
+
+  </ion-list>
+  <ion-list >
+<ion-card class="ion-text-center">
+
+ <ion-grid class="directbackground" >
+           <ion-row justify-content-center align-items-center >
+            <ion-col >
+
+    <ion-item>
+       <ion-label>Name    : </ion-label>
+      <ion-input [(ngModel)]="kycdata.name" type="text" placeholder="Name" ></ion-input>
+    </ion-item>
+    <ion-item>
+       <ion-label>Email    : </ion-label>
+      <ion-input [(ngModel)]="kycdata.kycemail" type="email" placeholder="Email" ></ion-input>
+    </ion-item>
+      <ion-item>
+       <ion-label>Phone :</ion-label>
+        <ion-input [(ngModel)]="kycdata.kycphone" type="phone" placeholder="Phone" ></ion-input>
+      </ion-item>
+      <ion-item>
+       <ion-label>Address:</ion-label>
+        <ion-textarea rows="8" [(ngModel)]="kycdata.address"   class="ion-text-wrap"  type="text" placeholder="Address" ></ion-textarea>
+      </ion-item>
+ <label class="error-message">{{errorMessage}}</label>
+      <ion-item>
+       <ion-label>Send kyc documents to support@thepaybox.biz 
+          <p> Upon verifying, account will be marked kyc verified </p>
+      </ion-label>
+      </ion-item>
+ </ion-col>
+        </ion-row>
+        </ion-grid>
+</ion-card>
+
+<ion-card class="ion-text-center">
+ <ion-grid class="directbackground" >
+           <!--ion-row justify-content-center align-items-center *ngIf="kycstatus != null && kycstatus.kycdone == 'false' ">
+            <ion-col >
+    <ion-item>
+       <ion-label>KYC document upload    : </ion-label>
+    </ion-item>
+<div *ngIf="uploaddone != 100">
+  <input type="file" (change)="uploadFile($event)" />
+    <div>{{ uploadPercent | async }}</div>
+    <a [href]="downloadURL | async">{{ downloadURL | async }}</a>
+</div>
+<div *ngIf="uploaddone == 100">
+ Uploaded successfully 
+</div>
+ </ion-col>
+        </ion-row -->
+        <ion-row *ngIf="kycdata != null && kycstatus.kycdone == 'false' ">
+    <ion-item>
+       <ion-label>Country    : </ion-label>
+      <ion-input [(ngModel)]="kycdata.country" type="text" placeholder="Enter country " ></ion-input>
+    </ion-item>
+    <ion-item>
+       <ion-label>Document type    : </ion-label>
+    <ion-select #select1 [(ngModel)]="kycdata.kycdoctype">
+      <ion-select-option  value="Driving License">Driving License</ion-select-option>
+      <ion-select-option  value="Passport ">Passport</ion-select-option>
+    </ion-select>
+   </ion-item>
+
+      <ion-item>
+       <ion-label>Document number :</ion-label>
+        <ion-input [(ngModel)]="kycdata.kycdocnumber" type="text" placeholder="Document number" ></ion-input>
+      </ion-item>
+        </ion-row>
+        </ion-grid>
+      <ion-item>
+    <ion-button  [disabled]="kycstatus.kycdone == 'submitted'" [disabled]="loggedinuser == null" item-right small class="colorbutton" (click)="kycsubmit()"   >Submit kyc </ion-button>
+      </ion-item>
+</ion-card>
+
+  </ion-list>
+
+</ion-content>

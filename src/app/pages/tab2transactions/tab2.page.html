@@ -1,0 +1,88 @@
+<ion-header>
+  <ion-toolbar >
+   <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+
+  <ion-segment  [(ngModel)]="whichtransaction">
+    <ion-segment-button value="senttransactions">
+      <ion-label > Sent </ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="receivedtransactions">
+      <ion-label > Received </ion-label>
+    </ion-segment-button>
+  </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+ 
+ <ion-list *ngIf="whichtransaction == 'senttransactions'">
+ <ion-item >
+      <ion-button slot="end" size="small" color="primary" (click)="clearsentall()"> Clear all </ion-button>
+      <ion-button slot="end" size="small" color="primary" (click)="refreshsent()"> Refresh </ion-button>
+      </ion-item >
+
+
+    <ion-item *ngIf="senttransactions.length == 0" >
+  No sent transactions
+    </ion-item  >
+
+    <ion-item *ngFor="let msg of senttransactions" >
+          <ion-label  class="ion-text-wrap">
+            <h3> Ref :          {{msg.id}} 
+        <span *ngIf="msg.reversible"> (Reversible) </span>
+        <span *ngIf="!msg.reversible"> (Not Reversible) </span>
+        </h3>
+            <h3> From Address:          {{msg.fromaddress}}
+  </h3>
+            <h4> To Address:          {{msg.toaddress}}
+  </h4>
+            <p>
+          Txid: {{msg.txid }}
+            </p>
+            <p>
+          Amount: {{msg.amount | FromSatoshi | number: '1.0-9' }} DASH
+            </p>
+       </ion-label>
+    </ion-item>
+</ion-list>
+
+ <ion-list *ngIf="whichtransaction == 'receivedtransactions'">
+ <ion-item >
+      <ion-button slot="end" size="small" color="primary" (click)="clearreceivedall()"> Clear all </ion-button>
+      <ion-button slot="end" size="small" color="primary" (click)="refreshreceived()"> Refresh </ion-button>
+      </ion-item >
+
+
+    <ion-item *ngIf="receivedtransactions.length == 0" >
+  No received transactions
+    </ion-item  >
+
+    <ion-item *ngFor="let msg of receivedtransactions" >
+          <ion-label  class="ion-text-wrap">
+            <h3> Ref :          {{msg.id}} </h3>
+            <h3> From Address:          {{msg.fromaddress}}
+  </h3>
+            <h4> To Address:          {{msg.toaddress}}
+  </h4>
+            <p>
+          Txid: {{msg.txid }}
+            </p>
+            <p>
+          Amount: {{msg.amount | FromSatoshi | number: '1.0-9' }} DASH
+            </p>
+       </ion-label>
+    </ion-item>
+</ion-list>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar color="primary" class="ion-text-center">
+    <ion-title>
+<sup> Made in </sup>  <img alt="91springboard" height="40"    src="assets/imgs/91springlogo.png"  float="left" />
+   </ion-title>
+  </ion-toolbar>
+</ion-footer>
+

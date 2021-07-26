@@ -1,0 +1,79 @@
+
+Login (any screen)
+Unlock (any screen) -> Switch to activation if needed 
+
+-> wallet unlock failed (corrupted, wrong wallet)
+-> 
+
+Activated means -> Assigned wallet
+Locked and not activated
+Not Activated (can happen, because of error, file corrupted, real change, walet missing)
+-> Contact help
+
+Wallet changed 
+-> Activation needed
+
+Wallet screen
+
+When login, unlock, activate should happen in app
+Operation related 
+-----------------
+DirectPay  -> Login, (only receive) -> will work without unlock. Unlock for wallet use
+Home -> Login, unlock (unlock fail can happen)
+ServerlessWallet -> Login, unlock, assign, activate. (unlock fail can happen)
+Send Bit/Dash -> Login, Unlock (unlock fail can happen)
+Receive Bit/Dash -> Login is good enough, but unlock is needed
+
+On signup
+--------
+Login, Terms, PasswordSet, Unlock
+
+For sending
+-----------
+UnlockedWallets -> unlocked and kept in cache
+While using -> check if "userinfowallet is same as", unlocked ones
+
+For receving
+------------
+Useencwallets -> 
+While using -> check if "userinfowallet is same as", encwallet ones
+
+On activation
+--------------
+Assign new wallet to userinfo
+-> Check new wallet-uid matching userinfo-uid
+-> ask activation
+
+(wallet can have activated ? )
+
+-> assigned + activate = unlocked
+-> wallet assigned,activated = unlocked
+-> then unlock
+
+On create
+----------
+- assigned
+
+on unlock
+---------
+- activate -> mark as unlocked
+
+
+Others
+------
+Login is good enough
+
+-----------------------------------
+
+All screen activation not happening
+
+Wallet messup, prompting new users
+(Activate error won't come, as it directs to WalletPage to Activate)
+
+----------------------
+
+
+Rules
+- Logout and close application
+
+

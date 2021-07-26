@@ -1,0 +1,70 @@
+ <ion-toolbar >
+
+   <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+
+   <ion-title>
+      Register new user 
+    </ion-title>
+
+  </ion-toolbar>
+
+
+<ion-content> 
+    <ion-card>
+   <ion-card-header>
+     <ion-card-subtitle>Register</ion-card-subtitle>
+    <ion-card-title>Enter Username, email and password </ion-card-title>
+
+      </ion-card-header>
+      <ion-card-content>
+     <ion-item >
+    <ion-label padding-bottom position="stacked" > Username </ion-label>
+      <ion-input type="text" placeholder="Username" [(ngModel)]="username" > </ion-input>
+  </ion-item>
+
+
+     <ion-item >
+    <ion-label padding-bottom position="stacked" > Email </ion-label>
+      <ion-input type="email" placeholder="Email" [(ngModel)]="email" > </ion-input>
+  </ion-item>
+
+     <ion-item >
+    <ion-label padding-bottom position="stacked" > Password </ion-label>
+      <ion-input type="password" placeholder="Password" [(ngModel)]="password" > </ion-input>
+  </ion-item>
+
+
+
+
+
+  <ion-item>
+            <ion-button  (click)="signup()" > Register </ion-button>
+  </ion-item>
+  <ion-item>
+  <p>
+  You will receive a email to verify email-id after registering.
+  </p>
+
+  </ion-item>
+  <ion-item>
+            <ion-text class="error" text-center>{{error}}</ion-text>
+            <ion-text text-center class="block">Already have an account ?
+              <ion-button class="bold" routerLink="/login">Login here</ion-button></ion-text>
+
+  </ion-item >
+
+
+
+      </ion-card-content>
+    </ion-card>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar color="primary" class="ion-text-center">
+    <ion-title>
+<sup> Made in </sup>  <img alt="91springboard" height="40"    src="assets/imgs/91springlogo.png"  float="left" />
+   </ion-title>
+  </ion-toolbar>
+</ion-footer>

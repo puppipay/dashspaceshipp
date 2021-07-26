@@ -1,0 +1,332 @@
+<ion-header>
+<ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+        <ion-title>
+            <ion-label  > {{whichdash}} Home</ion-label>
+        </ion-title>
+
+
+        <ion-buttons slot="secondary">
+           <ion-button  [disabled]="!loggedinuser"  (click)="getaccount()">
+                Refresh
+            </ion-button>
+            <ion-button  [disabled]="loggedinuser && loggedinuser.uid == ''" (click)="logout()">
+		Logout 
+            </ion-button>
+    <ion-button  [disabled]="loggedinuser && loggedinuser.uid != ''" (click)="gotologin()">
+                Login
+            </ion-button>
+
+
+        </ion-buttons>
+
+    </ion-toolbar>
+</ion-header>
+
+<ion-content >
+
+    <div class="padContent" >
+
+ <ion-card>
+  <ion-card-header>
+    <ion-card-subtitle>  {{whichdash}} WALLET
+
+    </ion-card-subtitle>
+  </ion-card-header>
+
+ <ion-item >
+    <ion-icon name="wifi" slot="start"></ion-icon>
+    <ion-label class="ion-text-wrap"> <h4> Wallet Address  </h4> <p>  {{walletaddress}} </p>
+    </ion-label>
+    <ion-label slot="end" >
+ <ion-button   size="small" color="primary" (click)="getwalletbalance()"> balance </ion-button>
+    </ion-label>
+  </ion-item>
+
+<ion-item >
+    <ion-icon name="wifi" slot="start"></ion-icon>
+    <ion-label> Wallet Address </ion-label>
+    <ion-label slot="end" >
+ <ion-button   size="small" color="primary" (click)="copywalletaddress()"> Copy </ion-button>
+    </ion-label>
+  </ion-item>
+
+
+  <ion-item >
+    <ion-icon name="wine" slot="start"></ion-icon>
+
+    <ion-label class="ion-text-wrap">
+      <ion-text color="primary">
+        <h3> Balance </h3>
+      </ion-text>
+      <ion-text color="secondary">
+      <p >   {{whichdash}}  </p>
+      </ion-text>
+    </ion-label>
+
+
+    <ion-label  slot="end"> {{walletbalance.balanceSat | FromSatoshi | number: '1.0-9'}} </ion-label>
+  </ion-item>
+
+  <ion-item >
+    <ion-icon name="wine" slot="start"></ion-icon>
+    <ion-label class="ion-text-wrap">
+      <ion-text color="primary">
+        <h3> Balance </h3>
+      </ion-text>
+      <ion-text color="secondary">
+      <p >  USD  </p>
+      </ion-text>
+    </ion-label>
+    <ion-label slot="end"> {{walletbalance.balanceSat | ToFiatDash | number : '1.0-4' }} </ion-label>
+  </ion-item>
+
+  <ion-item >
+    <ion-icon name="warning" slot="start"></ion-icon>
+    <ion-label> Unconfirmed  </ion-label>
+    <ion-label  slot="end">  {{walletbalance.unconfirmedBalanceSat | FromSatoshi | number: '1.0-9'}}   {{whichdash}}  </ion-label>
+  </ion-item>
+
+  <ion-item >
+    <ion-icon name="heart" slot="start"></ion-icon>
+    <ion-label> Donation given </ion-label>
+    <ion-label  slot="end"> {{donationgiven | FromSatoshi | number: '1.0-9'}}   {{whichdash}}  </ion-label>
+  </ion-item>
+
+</ion-card>
+
+<ion-list>
+  <!-- ion-item>
+    <ion-label>
+    <h2>Speed up send transaction </h2>
+    <p> A 500 satoshi increase in network fees happens </p>
+    </ion-label>
+    <ion-toggle slot="end"  (ionChange)="incchangesendfees($event)" [(ngModel)]="sendnetworkfeeschange.increase" ></ion-toggle>
+  </ion-item>
+  <ion-item>
+    <ion-label>
+    <h2>Reduce network fee for send transaction </h2>
+    <p> A 500 satoshi decrease in network fees happens </p>
+    </ion-label>
+    <ion-toggle slot="end"  (ionChange)="decchangesendfees($event)" [(ngModel)]="sendnetworkfeeschange.decrease" ></ion-toggle>
+  </ion-item -->
+   <ion-item>
+    <ion-label>
+    <h2> Standard plan </h2>
+    <p> {{this.feesdisplay.stdfeesdisp}}  </p>
+    </ion-label>
+    <ion-toggle slot="end"  (ionChange)="standarduserchoicechange($event)" [(ngModel)]="senduserchoice.standardplan" ></ion-toggle>
+  </ion-item>
+  <ion-item *ngIf="useraccount.activeitems.star">
+    <ion-label>
+    <h2> Star plan </h2>
+    </ion-label>
+    <ion-toggle slot="end"  (ionChange)="staruserchoicechange($event)" [(ngModel)]="senduserchoice.starplan" ></ion-toggle>
+  </ion-item>
+  <ion-item *ngIf="useraccount.activeitems.galaxy">
+    <ion-label>
+    <h2> Galaxy plan </h2>
+    </ion-label>
+    <ion-toggle slot="end"  (ionChange)="galaxyuserchoicechange($event)" [(ngModel)]="senduserchoice.galaxyplan" ></ion-toggle>
+  </ion-item>
+  <ion-item *ngIf="useraccount.activeitems.discount">
+    <ion-label>
+    <h2> Discount plan </h2>
+    <p> {{this.feesdisplay.stddiscountfeesdisp}}  </p>
+    </ion-label>
+    <ion-toggle slot="end"  (ionChange)="discountuserchoicechange($event)" [(ngModel)]="senduserchoice.discountplan" ></ion-toggle>
+  </ion-item>
+
+</ion-list>
+
+   <ion-card>
+  <ion-card-header>
+    <ion-card-title>FEATURES</ion-card-title>
+  </ion-card-header>
+
+<ion-item>
+  <ion-icon name="arrow-dropright" slot="start"></ion-icon>
+  <ion-label class="ion-text-wrap">
+    <h2>Send  {{whichdash}} Directly </h2>
+    <p> This is not reversible </p>
+  </ion-label>
+  <ion-button fill="outline" (click)="senddashdirect()" slot="end">Details</ion-button>
+</ion-item>
+
+<ion-item class="ion-text-wrap">
+  <ion-icon name="arrow-dropright" slot="start"></ion-icon>
+  <ion-label class="ion-text-wrap">
+    <h2>Send  {{whichdash}} using Contract/PIN </h2>
+    <p> This is reversible </p>
+  </ion-label>
+  <ion-button fill="outline" (click)="sendreversibledash()" slot="end">Details</ion-button>
+</ion-item>
+
+<ion-item class="ion-text-wrap">
+  <ion-icon name="arrow-dropright" slot="start"></ion-icon>
+  <ion-label class="ion-text-wrap">
+    <h2> Reversing sent  {{whichdash}} </h2>
+    <p> Possible before recepient accepts payment </p>
+  </ion-label>
+  <ion-button fill="outline" (click)="reversingdash()" slot="end">Details</ion-button>
+</ion-item>
+
+
+<ion-item >
+  <ion-icon name="arrow-dropleft" slot="start"></ion-icon>
+  <ion-label class="ion-text-wrap">
+    <h2>Receive  {{whichdash}} Directly </h2>
+    <p> Sender sends  {{whichdash}} to your wallet address </p>
+  </ion-label>
+  <ion-button fill="outline" (click)="receivedashdirect()" slot="end">Details</ion-button>
+</ion-item>
+
+<ion-item >
+  <ion-icon name="arrow-dropleft" slot="start"></ion-icon>
+  <ion-label class="ion-text-wrap">
+    <h2>Receive  {{whichdash}} from Contract and PIN </h2>
+    <p> Sender sends  {{whichdash}} protected by Contract and PIN </p>
+  </ion-label>
+  <ion-button fill="outline" (click)="receivefromescrow()" slot="end">Details</ion-button>
+</ion-item>
+
+
+</ion-card>
+
+
+
+  <ion-card>
+  <ion-card-header>
+    <ion-card-title>FUNDING</ion-card-title>
+  </ion-card-header>
+
+  <ion-item>
+    <ion-icon name="star" slot="start"></ion-icon>
+    <ion-label>Deposit  </ion-label>
+    <ion-button (click)="presentModalDash()" fill="outline" slot="end"> {{whichdash}} </ion-button>
+  </ion-item>
+
+  <ion-card-header>
+    <ion-card-title>EXCHANGE</ion-card-title>
+  </ion-card-header>
+  <ion-item>
+     <ion-badge item-end slot="start" > 1 </ion-badge>
+    <ion-label> ETH </ion-label>
+    <ion-input  type="number" slot="end" [(ngModel)]="fromethamount" placeholder="Amount "></ion-input>
+
+
+    <ion-button fill="outline" slot="end" (click)="checketh()" >xchange </ion-button>
+  </ion-item>
+  <ion-item>
+  <ion-icon name="arrow-dropright" slot="start"></ion-icon>
+   <ion-label> <h4> Expected  {{whichdash}} : </h4>
+    <p>  {{ethexchangeamount  | number : '1.4-4'}} </p> </ion-label>
+    <ion-button [disabled]="ethexchangeamount == 0" fill="outline" slot="end" (click)="doEthDashConversion()" >To dash </ion-button>
+  </ion-item>
+
+  <ion-item>
+     <ion-badge item-end slot="start" > 2 </ion-badge>
+    <ion-label> BTC </ion-label>
+    <ion-input   type="number" slot="end" [(ngModel)]="frombtcamount" placeholder="Amount "></ion-input>
+    <ion-button fill="outline" slot="end" (click)="checkbtc()" >xchange </ion-button>
+  </ion-item>
+  <ion-item>
+  <ion-icon name="arrow-dropright" slot="start"></ion-icon>
+   <ion-label> <h4> Expected  {{whichdash}} : </h4> 
+      <p> {{btcexchangeamount | number : '1.4-4'}} </p> </ion-label>
+    <ion-button [disabled]="btcexchangeamount == 0" fill="outline" slot="end" (click)="doBtcDashConversion()" >To dash </ion-button>
+  </ion-item>
+
+  <ion-item>
+     <ion-badge item-end slot="start" > 3 </ion-badge>
+    <ion-label> BCH </ion-label>
+    <ion-input    type="number" size="small" slot="end" [(ngModel)]="frombchamount" placeholder="Amount "></ion-input>
+    <ion-button fill="outline" slot="end" (click)="checkbch()" >xchange </ion-button>
+
+  </ion-item>
+  <ion-item>
+  <ion-icon name="arrow-dropright" slot="start"></ion-icon>
+   <ion-label> <h4> Expected  {{whichdash}} : </h4>
+    <p>  {{bchexchangeamount | number : '1.4-4'}} </p> </ion-label>
+    <ion-button [disabled]="bchexchangeamount == 0" fill="outline" slot="end" (click)="doBchDashConversion()" >To dash </ion-button>
+  </ion-item>
+
+
+
+
+    <!--ion-button (click)="sharewhatsapp()" fill="outline" slot="end">new coin</ion-button>
+    <ion-button (click)="whatsappShareAddress2()" fill="outline" slot="end">Other coin</ion-button>
+    <ion-button (click)="sharewhatsapp()" fill="outline" slot="end">new coin</ion-button>
+    <ion-button (click)="sharewhatsapp2()" fill="outline" slot="end">new coin</ion-button>
+    <ion-button (click)="socialSharingfun()" fill="outline" slot="end">socialSharing </ion-button >
+    <ion-button (click)="socialSharingfun()" fill="outline" slot="end">Fun </ion-button >
+    <ion-button (click)="socialSharingfun1()" fill="outline" slot="end">Fun1 </ion-button >
+    <ion-button (click)="socialSharingfun2()" fill="outline" slot="end">Fun2 </ion-button >
+    <ion-button (click)="socialSharingfun3()" fill="outline" slot="end">Fun3 </ion-button >
+    <ion-button (click)="socialSharingfun4()" fill="outline" slot="end">Fun4 </ion-button >
+    <ion-button (click)="shareEmail()" fill="outline" slot="end">shareEmail </ion-button >
+    <ion-button (click)="socialSharingfun4()" fill="outline" slot="end">icontest 
+
+    <ion-icon name="wifi" slot="start"></ion-icon>
+   </ion-button -->
+
+
+
+
+
+
+
+</ion-card>
+
+
+
+
+
+ <!-- ion-fab right top edge>
+    <button ion-fab class="pop-in" color="dark">
+        FAB
+    </button>
+  </ion-fab -->
+
+
+
+
+
+
+      <!-- share-button  button="sms" color="primary"  >
+        <ion-icon  name="logo-sms"></ion-icon>
+      </share-button>
+<button shareButton="sms">sms Share</button -->
+
+ <!--div ion-fixed class="madein">
+ <h4> Made in 91springboard </h4>
+ <img [src]="madein"  scroll="false" width="20%">
+ </div -->
+
+
+ <!-- ion-fab slot="fixed" vertical="bottom" right >
+    <ion-fab-button class="pop-in" color="danger">Share</ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button button  href="https://www.facebook.com/sharer/sharer.php?u={{hostingdomain}}" target="_blank">
+        <ion-icon  name="logo-facebook"></ion-icon>
+</ion-fab-button -->
+      <!-- a button ion-fab  color="secondary" href="https://www.twitter.com/share?url=testnet1.puppipay.com" target="_blank">
+        <ion-icon  name="logo-twitter"></ion-icon>
+</a >
+
+    </ion-fab-list>
+  </ion-fab -->
+    </div>
+
+
+</ion-content>
+
+<!-- ion-footer>
+  <ion-toolbar color="primary" class="ion-text-center">
+    <ion-title>
+<sup> Made in </sup>  <img alt="91springboard" height="40"    src="assets/imgs/91springlogo.png"  float="left" /> 
+   </ion-title>
+  </ion-toolbar>
+</ion-footer -->
