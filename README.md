@@ -30,3 +30,13 @@ The simpler version of the app can be seen in
 The simpler version of the features can be seen in
 
 - https://github.com/puppipay/blue011issueionic4
+
+
+## Backend for this app
+
+The backend is implemented using below samples
+
+- https://github.com/puppipay/dashcontrol/tree/main/samples
+
+
+
