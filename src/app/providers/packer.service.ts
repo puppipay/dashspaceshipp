@@ -14,8 +14,8 @@ import {map, tap} from 'rxjs/operators';
 export class PackerService {
   public token: any;
   url: string = "http://localhost:1337";
-  apiKey = '813705e2f4cafa9acd1b2a0c29855';
-  apiSecret = '37daac26f3726a3a759fc30dd111d1abd508418753d5a5c6ed0a2b1';
+  apiKey = '';
+  apiSecret = '';
 
   constructor(public http: Http, public storage: Storage) {
     this.url = "http://localhost:1337";

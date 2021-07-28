@@ -19,7 +19,7 @@ import { walletBalance } from '../models/walletbalance.model' ;
 export class TermsuserService {
   public token: any;
   url: string ;
-  apiKey = '813705e2f4cafa9acd1b2a0c29855';
+  apiKey = '';
   apiSecret = 'xx';
   localname = "productcreate";
   myproduct: any;

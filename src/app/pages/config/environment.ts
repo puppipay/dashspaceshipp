@@ -10,10 +10,10 @@ let mynet = (myenv == "testdev" || myenv == "testprod")? "testnet": "livenet";
 
 export const environment = {
     production: myprod,
-    hosteddomain : 'https://grand2.belavaditech.com', 
+    hosteddomain : '', 
     network : 'livenet',
     storageuniq: 'andr',
-    termsurl: "https://goo.gl/forms/dOx41nN6hPfwU0T32",
+    termsurl: "",
     supportcontact: "support@thepaybox.biz",
     payPalEnvironmentSandbox : '',
     payPalEnvironmentProduction : '',
@@ -40,10 +40,10 @@ export const environment = {
     menutitle : 'Dash Spaceship',
     dummy: 'dhdhd',
      fallbackaddress : {
-        ethereumaddress: '0x190a458737a764ad4B99290aB10b13147A43000e',
-        bitcoinaddress: '1NbGeHF7z1Xose2ZxK9VciNjfy8Qb2NbyD',
+        ethereumaddress: '',
+        bitcoinaddress: '',
         stellaraddress: '',
-        bitcoincashaddress: '3JTYAfjWq2N3xL5kUTQrrfKGNPiwTTgjvX',
+        bitcoincashaddress: '',
         rippleaddress: '',
         tronaddress: '',
         eosaddress: '',
@@ -54,7 +54,7 @@ export const environment = {
         everipediaaddress: '',
         bataddress: '',
         golemaddress: '',
-        litecoinaddress: '3D5sQ6hHgM3fQS9nWvkhSUpUMmTFWvN2i7',
+        litecoinaddress: '',
     },
   err: {
     'W1230': { code: "W1230", dir: "tab4wallet", function: "localsave " },
